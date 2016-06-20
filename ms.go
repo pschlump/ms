@@ -13,11 +13,9 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
-	"os/user"
 	"regexp"
 	"strconv"
 	"strings"
@@ -35,9 +33,9 @@ const ISO8601 = "2006-01-02T15:04:05.99999Z07:00"
 
 // This is annoying but I had to include this function or the Go (verison 1.2) compiler
 // hurled.  Oh well....  It is short - just leave it in.
-func dummy() {
-	fmt.Printf("Make da compiler happy\n")
-}
+// func dummy() {
+// 	fmt.Printf("Make da compiler happy\n")
+// }
 
 const (
 	PathSep = string(os.PathSeparator)
@@ -69,7 +67,7 @@ func CenterStr(n int, t interface{}) (r string) {
 	return
 }
 
-// Pad a string with 'w' to a length of 'l' - pad on left
+// PadStr pads a string with 'w' to a length of 'l' - pad on left
 func PadStr(l int, w string, s string) string {
 	if len(s) >= l {
 		return s
@@ -82,7 +80,7 @@ func PadStr(l int, w string, s string) string {
 	return t + s
 }
 
-// Pad a string with 'w' to a length of 'l' - pad on right
+// PadStrRight pads a string with 'w' to a length of 'l' - pad on right
 func PadStrRight(l int, w string, s string) string {
 	if len(s) >= l {
 		return s
@@ -95,44 +93,19 @@ func PadStrRight(l int, w string, s string) string {
 	return s + t
 }
 
+// ZeroPad left pad a string with "0" to the desired length 'l'
 func ZeroPad(l int, s string) string {
 	return PadStr(l, "0", s)
-	//	if len(s) >= l {
-	//		return s
-	//	}
-	//	k := l - len(s)
-	//	t := ""
-	//	for i := 0; i < k; i++ {
-	//		t += "0"
-	//	}
-	//	return t + s
 }
+
+// ZeroPadRight pad on right a string with "0" to desired length 'l'
 func ZeroPadRight(l int, s string) string {
 	return PadStrRight(l, "0", s)
-	//	if len(s) >= l {
-	//		return s
-	//	}
-	//	k := l - len(s)
-	//	t := ""
-	//	for i := 0; i < k; i++ {
-	//		t += "0"
-	//	}
-	//	return s + t
-}
-
-// OS related Support Stuff ----------------------------------------------------------------------------------------------
-
-func HomeDir() string {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-	// fmt.Println( usr.HomeDir )
-	return usr.HomeDir
 }
 
 // Merge sets of data ----------------------------------------------------------------------------------------------------
 
+// LowerCaseNames convers the keys on a map of strings to lower case
 func LowerCaseNames(a map[string]interface{}) (rv map[string]interface{}) {
 	rv = make(map[string]interface{})
 	for i, v := range a {
@@ -238,6 +211,7 @@ func FmtDate(f string, t time.Time) (r string) {
 	r = t.Format(f)
 	return
 }
+
 func StrFTime(f string, t time.Time) (r string) {
 	// older version of library returned errros if there was one
 	//r, err := strftime.Format(f, t)
@@ -247,6 +221,7 @@ func StrFTime(f string, t time.Time) (r string) {
 	r = strftime.Format(f, t)
 	return
 }
+
 func PicFloat(format string, flt interface{}) (r string) {
 	switch flt.(type) {
 	case int:
@@ -268,6 +243,7 @@ func PicFloat(format string, flt interface{}) (r string) {
 	}
 	return
 }
+
 func Nvl(show string, d string) string {
 	if d == "" {
 		return show

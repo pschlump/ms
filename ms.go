@@ -309,7 +309,8 @@ type datePat struct {
 }
 
 var datePatTab []datePat
-var db_fuzzy_date = false
+
+const db_fuzzy_date = true
 
 func rmQuote(s string, t string) string {
 	return strings.Trim(s, `"`)
@@ -330,16 +331,24 @@ func init() {
 	// const ISO8601 = "2006-01-02T15:04:05.99999Z07:00"
 	/* 0 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`"`), rmQuote, ""})
 	/* 1 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`Z$`), rmTrailingZ, ""})
-	/* 2 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+$`), nil, "2006-01-02T15:04:05.99999"})
-	/* 3 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`), nil, "2006-01-02T15:04:05"})
-	/* 4 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`), nil, "2006-01-02"})
-	/* 5 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}-\d{2}-\d{2}$`), nil, "06-01-02"})
-	/* 6 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`.`), resetToOrig, ""})
-	/* 7 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`"`), rmQuote, ""})
-	/* 8 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[-+]\d{2}:\d{2}$`), nil, "2006-01-02T15:04:05.99999-07:00"})
-	/* 9 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[-+]\d{4}$`), nil, "2006-01-02T15:04:05.99999-0700"})
-	/*10 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[-+]\d{2}:\d{2}$`), nil, "2006-01-02T15:04:05-07:00"})
-	/*11 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[-+]\d{4}$`), nil, "2006-01-02T15:04:05-0700"})
+	/* 2 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2} [aApP][mM]$`), nil, "01/02/2006 03:04:05 PM"})
+	/* 3 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{2} \d{2}:\d{2}:\d{2} [aApP][mM]$`), nil, "01/02/06 03:04:05 PM"})
+	/* 2 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{4} \d{1}:\d{2}:\d{2} [aApP][mM]$`), nil, "01/02/2006 3:04:05 PM"})
+	/* 3 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{2} \d{1}:\d{2}:\d{2} [aApP][mM]$`), nil, "01/02/06 3:04:05 PM"})
+	/* 4 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{4} \d{2}:\d{2} [aApP][mM]$`), nil, "01/02/2006 03:04 PM"})
+	/* 5 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{2} \d{2}:\d{2} [aApP][mM]$`), nil, "01/02/06 03:04 PM"})
+	/* 4 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{4} \d{1}:\d{2} [aApP][mM]$`), nil, "01/02/2006 3:04 PM"})
+	/* 5 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{2} \d{1}:\d{2} [aApP][mM]$`), nil, "01/02/06 3:04 PM"})
+	/* 6 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+$`), nil, "2006-01-02T15:04:05.99999"})
+	/* 7 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$`), nil, "2006-01-02T15:04:05"})
+	/* 8 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`), nil, "2006-01-02"})
+	/* 9 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}-\d{2}-\d{2}$`), nil, "06-01-02"})
+	/*10 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`.`), resetToOrig, ""})
+	/*11 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`"`), rmQuote, ""})
+	/*12 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[-+]\d{2}:\d{2}$`), nil, "2006-01-02T15:04:05.99999-07:00"})
+	/*13 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[-+]\d{4}$`), nil, "2006-01-02T15:04:05.99999-0700"})
+	/*14 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[-+]\d{2}:\d{2}$`), nil, "2006-01-02T15:04:05-07:00"})
+	/*15 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[-+]\d{4}$`), nil, "2006-01-02T15:04:05-0700"})
 
 	// 2013-11-06T00:00:00+0000
 }
@@ -356,7 +365,7 @@ func FuzzyDateTimeParse(s string, nullOk bool) (d time.Time, isNull bool, err er
 		// _ = i
 		if v.fmt.MatchString(s) {
 			if db_fuzzy_date {
-				fmt.Printf("got match at %d, s=%s\n", i, s)
+				fmt.Printf("got match at %d, s=%s, pfmt=%s\n", i, s, v.pfmt)
 			}
 			if v.prep != nil {
 				s = v.prep(s, t)

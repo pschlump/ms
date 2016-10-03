@@ -247,4 +247,13 @@ func TestFixBindParams01(t *testing.T) {
 	}
 }
 
+func TestFuzzy1(t *testing.T) {
+
+	dt, isNull, err := FuzzyDateTimeParse("07/05/2016 8:04 PM", true)
+	if err != nil {
+		t.Fatalf("Failed to parse date")
+	}
+	fmt.Printf("dt=%s isNull=%v\n", dt, isNull)
+}
+
 /* vim: set noai ts=4 sw=4: */

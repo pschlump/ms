@@ -22,9 +22,9 @@ import (
 	"time"
 
 	strftime "github.com/hhkbp2/go-strftime" // ../strftime
+	"github.com/pschlump/MiscLib"
 	tr "github.com/pschlump/godebug"
 	words "github.com/pschlump/gowords"
-
 	"github.com/pschlump/picfloat" // "../picfloat"
 	"github.com/pschlump/pictime"  // "../pictime"
 )
@@ -212,6 +212,26 @@ func FmtDate(f string, t time.Time) (r string) {
 	return
 }
 
+func FmtDateTS(f string, ts string) (r string) {
+	fff := "2006-01-02T15:04:05.00000+0000"
+	t, err := time.Parse(fff, ts)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%sUnable to parse ->%s<- with format ->%s<- error=%s%s\n", MiscLib.ColorRed, ts, fff, err, MiscLib.ColorReset)
+		return "2006-01-02T15:04:05.000Z"
+	}
+	r = t.Format(f)
+	return
+}
+
+func IsEven(x int) (r bool) {
+	if (x % 2) == 0 {
+		r = true
+	} else {
+		r = false
+	}
+	return
+}
+
 func StrFTime(f string, t time.Time) (r string) {
 	// older version of library returned errros if there was one
 	//r, err := strftime.Format(f, t)
@@ -329,7 +349,8 @@ func rmTrailingZ(s string, t string) string {
 func init() {
 	// isIntStringRe = regexp.MustCompile("[0-9][0-9]*")
 	// const ISO8601 = "2006-01-02T15:04:05.99999Z07:00"
-	/* 0 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`"`), rmQuote, ""})
+	/* 0 */
+	datePatTab = append(datePatTab, datePat{regexp.MustCompile(`"`), rmQuote, ""})
 	/* 1 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`Z$`), rmTrailingZ, ""})
 	/* 2 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{4} \d{2}:\d{2}:\d{2} [aApP][mM]$`), nil, "01/02/2006 03:04:05 PM"})
 	/* 3 */ datePatTab = append(datePatTab, datePat{regexp.MustCompile(`^\d{2}/\d{2}/\d{2} \d{2}:\d{2}:\d{2} [aApP][mM]$`), nil, "01/02/06 03:04:05 PM"})

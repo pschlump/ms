@@ -4,6 +4,7 @@
 // My Strings (ms) package
 //
 // String and Os/String related support functions that work with Go (golang) templates.
+// test change from new system.  Just a test.
 //
 
 package ms

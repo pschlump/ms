@@ -4,10 +4,9 @@ package ms
 
 import (
 	"fmt"
+	"github.com/pschlump/json" //	"encoding/json"
 	"os"
 	"testing"
-
-	"github.com/pschlump/json" //	"encoding/json"
 )
 
 //type TestCase struct {
@@ -254,6 +253,15 @@ func TestFuzzy1(t *testing.T) {
 		t.Fatalf("Failed to parse date")
 	}
 	fmt.Printf("dt=%s isNull=%v\n", dt, isNull)
+}
+
+func Test_Tr(t *testing.T) {
+	got := Tr("abcdef123ghi", "12345", "X")
+	// fmt.Printf("rv [%s]\n", rv)
+	expect := "abcdefXXXghi"
+	if got != expect {
+		t.Errorf("Error , Expected ->%s<- got ->%s<-\n", expect, got)
+	}
 }
 
 /* vim: set noai ts=4 sw=4: */

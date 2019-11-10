@@ -10,6 +10,7 @@
 package ms
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"io"
@@ -577,6 +578,19 @@ func IfIsDef(dataHash map[string]interface{}, it string) bool {
 	return false
 }
 
+/*
+Sat May 11 20:30:16 MDT 2019
+func IfIsLen0(dataHash map[string]interface{}, it string) bool {
+	fmt.Printf("IfIsLen0: it=%s\n", it)
+	if x, ok := dataHash[it]; ok {
+		l := len(x)
+		fmt.Printf("Returning %v, v2=%v\n", l == 0, x)
+		return l == 0
+	}
+	return false
+}
+*/
+
 func IfIsNotNull(dataHash map[string]interface{}, it string) bool {
 	if x, ok := dataHash[it]; ok {
 		if ok {
@@ -624,6 +638,29 @@ func DoGet(client *http.Client, url string) string {
 	}
 
 	return string(rv)
+}
+
+// ===================================================================================================================================================
+
+func Tr(line, pat, rep string) (rv string) {
+	inPat := make(map[rune]int)
+	for ii, rn := range pat {
+		inPat[rn] = ii
+	}
+	var buffer bytes.Buffer
+	for _, rn := range line {
+		if pos, found := inPat[rn]; found {
+			if pos < len(rep) {
+				buffer.WriteByte(rep[pos])
+			} else {
+				buffer.WriteByte(rep[len(rep)-1])
+			}
+		} else {
+			buffer.WriteRune(rn)
+		}
+	}
+	rv = buffer.String()
+	return
 }
 
 /* vim: set noai ts=4 sw=4: */

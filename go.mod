@@ -1,6 +1,6 @@
 module github.com/pschlump/ms
 
-go 1.17
+go 1.19
 
 require (
 	github.com/hhkbp2/go-strftime v0.0.0-20150709091403-d82166ec6782
@@ -13,8 +13,8 @@ require (
 )
 
 require (
-	github.com/mattn/go-colorable v0.1.1 // indirect
-	github.com/mattn/go-isatty v0.0.5 // indirect
-	github.com/pschlump/ansi v1.0.0 // indirect
-	golang.org/x/sys v0.0.0-20190222072716-a9d3bda3a223 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/pschlump/ansi v1.0.1 // indirect
+	golang.org/x/sys v0.14.0 // indirect
 )

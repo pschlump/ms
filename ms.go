@@ -25,7 +25,7 @@ import (
 
 	strftime "github.com/hhkbp2/go-strftime" // ../strftime
 	"github.com/pschlump/MiscLib"
-	tr "github.com/pschlump/godebug"
+	tr "github.com/pschlump/dbgo"
 	words "github.com/pschlump/gowords"
 	"github.com/pschlump/picfloat" // "../picfloat"
 	"github.com/pschlump/pictime"  // "../pictime"
@@ -274,18 +274,16 @@ func Nvl(show string, d string) string {
 	}
 }
 
-//
 // idiotic format for dates ( just use ISO format YYYY-MM-DDTHH:mm:ss.nnn! )
 //
-//    <field member="Arrival" columns="40">Arrived   : {0:hh:mm tt  ddd, MMM dd, yyyy}</field>
-//		hh - 2digit hours
-//		mm - 2digit minutes
-//		tt - lower case am/pm
-//		ddd - day of week
-//		MMM - 3 char month name abrev.
-//		dd - 2 digit day of month.
-//		yyyy - year 4 digit
-//
+//	   <field member="Arrival" columns="40">Arrived   : {0:hh:mm tt  ddd, MMM dd, yyyy}</field>
+//			hh - 2digit hours
+//			mm - 2digit minutes
+//			tt - lower case am/pm
+//			ddd - day of week
+//			MMM - 3 char month name abrev.
+//			dd - 2 digit day of month.
+//			yyyy - year 4 digit
 func PicTime(f string, t interface{}) (r string) {
 	switch t.(type) {
 	case time.Time:

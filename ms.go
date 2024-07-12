@@ -639,7 +639,6 @@ func DoGet(client *http.Client, url string) string {
 }
 
 // ===================================================================================================================================================
-
 func Tr(line, pat, rep string) (rv string) {
 	inPat := make(map[rune]int)
 	for ii, rn := range pat {
@@ -660,5 +659,22 @@ func Tr(line, pat, rep string) (rv string) {
 	rv = buffer.String()
 	return
 }
+
+// ChopAt cuts the string 's' at the first ocurance of string 'c'.
+func ChopAt(c string, s string) (t string) {
+	t = s
+	for i := 0; i < len(s); i++ {
+		if strings.HasPrefix(s[i:], c) {
+			t = s[0:i]
+		}
+	}
+	return
+}
+
+/*
+func main() {
+	fmt.Printf("abcTxyz ->%s<-\n", ChopAt("T", "abcTxyz"))
+}
+*/
 
 /* vim: set noai ts=4 sw=4: */

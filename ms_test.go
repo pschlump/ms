@@ -4,9 +4,10 @@ package ms
 
 import (
 	"fmt"
-	"github.com/pschlump/json" //	"encoding/json"
 	"os"
 	"testing"
+
+	"github.com/pschlump/json" //	"encoding/json"
 )
 
 //type TestCase struct {
@@ -117,7 +118,7 @@ func TestPicFloat(t *testing.T) {
 	}
 }
 
-//func PadOnRight ( n int, s string ) ( r string ) {
+// func PadOnRight ( n int, s string ) ( r string ) {
 func TestPadOnRight(t *testing.T) {
 	s := PadOnRight(5, "abc")
 	ex := "abc  "
@@ -259,6 +260,14 @@ func Test_Tr(t *testing.T) {
 	got := Tr("abcdef123ghi", "12345", "X")
 	// fmt.Printf("rv [%s]\n", rv)
 	expect := "abcdefXXXghi"
+	if got != expect {
+		t.Errorf("Error , Expected ->%s<- got ->%s<-\n", expect, got)
+	}
+}
+
+func Test_ChopAt(t *testing.T) {
+	got := ChopAt("T", "abcTxyz")
+	expect := "abc"
 	if got != expect {
 		t.Errorf("Error , Expected ->%s<- got ->%s<-\n", expect, got)
 	}
